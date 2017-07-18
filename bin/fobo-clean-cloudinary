@@ -1,9 +1,16 @@
 #!/usr/bin/env node
 
-var http = require('http');
+var http = require('http')
 
-var port = process.env.PORT || '3009';
+var port = process.env.PORT || '3009'
 
-console.log("Helloooo");
-console.log(port);
+var cloudinary = require('cloudinary')
+
+console.log("Helloooo")
+console.log(port)
+
+cloudinary.v2.api.resources(function(error, result){
+  console.log(error)
+  console.log(result)
+})
 
