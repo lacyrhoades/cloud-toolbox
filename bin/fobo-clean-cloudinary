@@ -1,16 +1,70 @@
 #!/usr/bin/env node
 
-var http = require('http')
-
-var port = process.env.PORT || '3009'
-
+require('dotenv').config()
 var cloudinary = require('cloudinary')
+var moment = require('moment')
 
-console.log("Helloooo")
-console.log(port)
+var config = {
+  'cloud_name': process.env.CLOUDINARY_CLOUD_NAME,
+  'api_key': process.env.CLOUDINARY_API_KEY,
+  'api_secret': process.env.CLOUDINARY_API_SECRET,
+}
 
-cloudinary.v2.api.resources(function(error, result){
-  console.log(error)
-  console.log(result)
-})
+cloudinary.config(config)
 
+var params = {
+  'max_results': 100
+}
+
+var cutoffDate = moment().subtract(2, 'week')
+
+doBatch()
+
+function doBatch(nextCursor = null) {
+  if (nextCursor) {
+    params['next_cursor'] = nextCursor
+  }
+
+  var deletable = []
+
+  cloudinary.v2.api.resources(params,
+    function(error, result){
+      if (error) {
+        console.error(error)
+      }
+      
+      console.log("Found resources: " + result.resources.length)
+
+      result.resources.forEach(function (eachResource) {
+        var created_at = eachResource.created_at
+        var date = moment(created_at)
+      
+        if (date.isBefore(cutoffDate)) {
+          deletable.push(eachResource.public_id)
+        }
+      })
+
+      if (deletable.length < 1) {
+        console.log("Batch resources newer than date " + cutoffDate.format())
+      } else {
+        doDelete(deletable)
+      }
+      
+      if (result.next_cursor != null && result.next_cursor.length) {
+        doBatch(result.next_cursor)
+      }
+    }
+  )
+}
+
+function doDelete(resourceIDs) {
+  console.log("Deleting resources: " + resourceIDs.length)
+  // cloudinary.v2.api.delete_resources(
+  //   resourceIDs,
+  //   function(error, result) {
+  //     if (error) {
+  //       console.error(error)
+  //     }
+  //   }
+  // );
+}
