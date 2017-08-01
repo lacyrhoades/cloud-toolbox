@@ -22,12 +22,17 @@ var cutoffDate = moment().subtract(30, 'minute')
 var successCount = 0
 
 console.log(`Searching for resources before: ${cutoffDate.format()} ...`)
-doBatch()
 
-function doBatch(nextCursor = null) {
+doBatch('image')
+
+doBatch('video')
+
+function doBatch(resourceType, nextCursor = null) {
   if (nextCursor) {
     params['next_cursor'] = nextCursor
   }
+
+  params['resource_type'] = resourceType
 
   var deletable = []
 
@@ -38,7 +43,7 @@ function doBatch(nextCursor = null) {
       }
       
       if (verbose) {
-        console.log("Found resources: " + result.resources.length)
+        console.log("Found ${resourceType} resources: " + result.resources.length)
       }
 
       result.resources.forEach(function (eachResource) {
@@ -52,15 +57,15 @@ function doBatch(nextCursor = null) {
 
       var nextBatch = function() {
         if (result.next_cursor != null && result.next_cursor.length) {
-          doBatch(result.next_cursor)
+          doBatch(resourceType, result.next_cursor)
         } else {
-          console.log("Deleted old resources: " + successCount)
+          console.log("Deleted old ${resourceType} resources: " + successCount)
         }
       }
 
       if (deletable.length < 1) {
         if (verbose) {
-          console.log("Batch resources newer than date " + cutoffDate.format())
+          console.log("Batch ${resourceType} resources newer than date " + cutoffDate.format())
         }
         nextBatch()
       } else {
