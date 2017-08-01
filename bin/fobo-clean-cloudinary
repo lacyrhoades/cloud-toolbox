@@ -18,7 +18,7 @@ var params = {
   'max_results': 100
 }
 
-var cutoffDate = moment().subtract(1, 'week')
+var cutoffDate = moment().subtract(30, 'minute')
 var successCount = 0
 
 console.log(`Searching for resources before: ${cutoffDate.format()} ...`)
