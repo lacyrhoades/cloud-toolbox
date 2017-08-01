@@ -43,7 +43,7 @@ function doBatch(resourceType, nextCursor = null) {
       }
       
       if (verbose) {
-        console.log("Found ${resourceType} resources: " + result.resources.length)
+        console.log(`Found ${resourceType} resources: ` + result.resources.length)
       }
 
       result.resources.forEach(function (eachResource) {
@@ -59,13 +59,13 @@ function doBatch(resourceType, nextCursor = null) {
         if (result.next_cursor != null && result.next_cursor.length) {
           doBatch(resourceType, result.next_cursor)
         } else {
-          console.log("Deleted old ${resourceType} resources: " + successCount)
+          console.log(`Deleted old ${resourceType} resources: ` + successCount)
         }
       }
 
       if (deletable.length < 1) {
         if (verbose) {
-          console.log("Batch ${resourceType} resources newer than date " + cutoffDate.format())
+          console.log(`Batch ${resourceType} resources newer than date ` + cutoffDate.format())
         }
         nextBatch()
       } else {
