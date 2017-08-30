@@ -6,7 +6,7 @@ var moment = require('moment')
 
 var verbose = false
 
-var cutoffDate = moment().subtract(30, 'day')
+var cutoffDate = moment().subtract(60, 'day')
 
 let apiToken = process.env.SLACK_API_TOKEN
 
