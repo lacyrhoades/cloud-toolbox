@@ -7,7 +7,6 @@
   },
   "dependencies": {
     "body-parser": "~1.17.1",
-    "cloudinary": "^1.9.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.3",
     "dotenv": "^4.0.0",
@@ -16,6 +15,5 @@
     "moment": "^2.18.1",
     "morgan": "~1.8.1",
     "serve-favicon": "~2.4.2",
-    "slack": "^8.3.1"
   }
 }
