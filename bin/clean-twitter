@@ -1,0 +1,16 @@
+#!/usr/bin/env node
+
+require('dotenv').config()
+
+var client = require('twitter-api').createClient()
+client.setAuth ( 
+    process.env.TWITTER_AUTH1,
+    process.env.TWITTER_AUTH2,
+    process.env.TWITTER_AUTH3,
+    process.env.TWITTER_AUTH4
+);
+
+var tweetIDs = new Set()
+var tweetCount = 0
+
+deleteOldest()
