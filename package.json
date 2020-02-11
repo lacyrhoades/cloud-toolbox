@@ -6,6 +6,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "dotenv": "^4.0.0",
     "twitter-api": "1.0.6"
   }
 }
